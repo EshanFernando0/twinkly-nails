@@ -1,0 +1,1 @@
+export const whatsappNumber = '94704553916';
