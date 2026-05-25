@@ -14,8 +14,6 @@ const Promotions = () => {
   const [loading, setLoading] = useState(true);
 
   // --- WHATSAPP CONFIGURATION ---
-  // Replace this with Roshi's actual phone number (include country code, omit the '+' sign)
-  // For Sri Lanka, it starts with 94 followed by the 9 digit number.
   useEffect(() => {
     const q = query(collection(db, 'promotions'), where("status", "==", true));
     
@@ -31,18 +29,11 @@ const Promotions = () => {
     return () => unsubscribe();
   }, []);
 
-  // WhatsApp Redirect Handler
+  // UPDATED: Professional WhatsApp Redirect Handler (No Promo Codes)
   const handleBookNow = (promo) => {
-    // This creates the custom message
-    const message = `Hi Roshi! ✨ I would like to book the "${promo.title}" special offer using the promo code: *${promo.code}*.`;
-    
-    // We encode it so spaces and symbols work perfectly in a web URL
+    const message = `Hello Roshi! ✨ I am interested in booking the "${promo.title}" special offer. Could you please provide me with more information and let me know your availability?`;
     const encodedMessage = encodeURIComponent(message);
-    
-    // Create the official WhatsApp redirect link
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-    
-    // Open WhatsApp in a new tab/app
     window.open(whatsappUrl, '_blank');
   };
 
@@ -58,7 +49,7 @@ const Promotions = () => {
             Current Promotions
           </h1>
           <p className="font-sans text-brand-burgundy/70 text-lg max-w-2xl mx-auto">
-            Treat yourself to our exclusive seasonal packages and luxurious add-ons. Mention the promo code when booking!
+            Treat yourself to our exclusive seasonal packages and luxurious add-ons. Book your spot today!
           </p>
         </div>
 
@@ -87,31 +78,37 @@ const Promotions = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     
+                    {/* UPDATED: Floating Badge now shows Offer Price instead of Discount Percentage */}
                     <div className="absolute top-6 right-6 z-20 bg-brand-burgundy text-white px-4 py-2 rounded-full shadow-lg transform rotate-3 group-hover:rotate-0 transition-transform">
-                      <span className="font-sans font-bold tracking-wider">{promo.discount}</span>
+                      <span className="font-sans font-bold tracking-wider">
+                        Rs {Number(promo.offerPrice).toLocaleString()}
+                      </span>
                     </div>
                   </div>
 
                   <div className="p-8 flex-grow flex flex-col justify-between items-center text-center">
                     <div className="w-full">
-                      <h3 className="font-serif font-bold text-brand-burgundy text-3xl leading-tight mb-6">{promo.title}</h3>
+                      <h3 className="font-serif font-bold text-brand-burgundy text-3xl leading-tight mb-4">
+                        {promo.title}
+                      </h3>
                       
-                      <div className="bg-brand-pink/20 border border-brand-pink border-dashed rounded-xl p-4 mb-6">
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Use Code</p>
-                        <p className="font-mono text-2xl font-bold text-brand-burgundy tracking-widest">{promo.code}</p>
-                      </div>
+                      {/* NEW: Displays additional details instead of the promo code box */}
+                      {promo.details && (
+                        <p className="font-sans text-brand-burgundy/70 text-sm mb-6 leading-relaxed">
+                          {promo.details}
+                        </p>
+                      )}
 
                       {promo.expiryDate && (
-                        <p className="text-sm font-sans text-red-400 font-bold mb-4">
+                        <p className="text-sm font-sans text-red-400 font-bold mb-4 bg-red-50 inline-block px-4 py-1.5 rounded-full">
                           Expires: {new Date(promo.expiryDate).toLocaleDateString()}
                         </p>
                       )}
                     </div>
 
-                    {/* NEW: Wired up the WhatsApp onClick handler */}
                     <button 
                       onClick={() => handleBookNow(promo)}
-                      className="w-full bg-brand-burgundy text-white py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-pink hover:text-brand-burgundy hover:shadow-lg transition-all duration-300"
+                      className="w-full mt-4 bg-brand-burgundy text-white py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-pink hover:text-brand-burgundy hover:shadow-lg transition-all duration-300"
                     >
                       Book This Offer
                     </button>

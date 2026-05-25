@@ -4,11 +4,9 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../firebase/firebase'; 
 import { whatsappNumber } from '../config/contact';
 
-// Import your new logo
 import Logo from '../assets/Logo01.png'; 
 
 const Home = () => {
-  // --- HERO SLIDESHOW LOGIC ---
   const heroImages = [
     "https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=2000&auto=format&fit=crop", 
     "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=2000&auto=format&fit=crop", 
@@ -22,8 +20,6 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [heroImages.length]);
 
-
-  // --- PROMOTIONS SLIDER LOGIC ---
   const [promotions, setPromotions] = useState([]);
   const [currentPromoSlide, setCurrentPromoSlide] = useState(0);
   const [loadingPromos, setLoadingPromos] = useState(true);
@@ -47,12 +43,11 @@ const Home = () => {
   }, [promotions.length]);
 
   const handleClaimOffer = (promo) => {
-    const message = `Hi Roshi! ✨ I saw the "${promo.title}" offer on your website and would love to claim it using the code: *${promo.code}*.`;
+    const message = `Hello Roshi! ✨ I saw the "${promo.title}" special offer on your homepage and I am interested in booking it. Could you please let me know your availability?`;
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
   };
 
-  // --- INSPIRATION (LIVE GALLERY) LOGIC ---
   const [galleryImages, setGalleryImages] = useState([]);
   
   const fallbackImages = [
@@ -64,15 +59,12 @@ const Home = () => {
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'gallery'), (snapshot) => {
       const images = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // Sort to get the newest uploads first
       images.sort((a, b) => b.createdAt?.toMillis() - a.createdAt?.toMillis());
-      // Grab only the top 3 images for the home page
       setGalleryImages(images.slice(0, 3));
     });
     return () => unsubscribe();
   }, []);
 
-  // Use live images if available, otherwise use fallbacks
   const displayImages = [
     galleryImages[0]?.imageUrl || fallbackImages[0],
     galleryImages[1]?.imageUrl || fallbackImages[1],
@@ -82,7 +74,6 @@ const Home = () => {
   return (
     <div className="flex flex-col w-full">
       
-      {/* 1. HERO SECTION */}
       <section className="relative h-[80vh] w-full flex items-center bg-brand-pink transition-all duration-1000 ease-in-out">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-60"
@@ -92,7 +83,6 @@ const Home = () => {
         
         <div className="relative z-20 max-w-6xl mx-auto px-10 w-full">
           
-          {/* ROUNDED LOGO AREA */}
           <div className="w-40 h-40 md:w-48 md:h-48 mb-6 rounded-full overflow-hidden shadow-2xl border-4 border-white bg-white">
             <img 
               src={Logo} 
@@ -115,7 +105,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 2. THE BENEFITS OF NAIL CARE SECTION (NEW) */}
       <section className="py-24 bg-gradient-to-b from-white to-brand-pink/10 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
           
@@ -127,7 +116,6 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Manicure Block */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
             <div className="order-2 lg:order-1 space-y-6">
               <h3 className="font-serif text-3xl font-bold text-brand-burgundy">Revitalizing Manicures</h3>
@@ -155,7 +143,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Pedicure Block */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative group">
                <div className="absolute inset-0 bg-rose-200/60 rounded-[3rem] transform -translate-x-4 translate-y-4 group-hover:-translate-x-6 group-hover:translate-y-6 transition-transform duration-500"></div>
@@ -186,7 +173,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 3. EXCLUSIVE OFFERS */}
       <section className="bg-gradient-to-r from-brand-pink/80 to-rose-200 py-20 flex justify-center px-10 relative overflow-hidden">
         <div className="bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2rem] p-10 max-w-2xl w-full text-center shadow-xl relative z-10 group min-h-[350px] flex flex-col justify-center">
           
@@ -199,8 +185,8 @@ const Home = () => {
              <p className="font-serif text-2xl text-brand-burgundy animate-pulse">Checking for special offers...</p>
           ) : promotions.length === 0 ? (
             <div className="animate-fade-in">
-              <h3 className="font-serif text-3xl font-bold text-brand-burgundy mb-2">First-time client: 15% off</h3>
-              <p className="text-brand-burgundy/70 text-sm mb-8">Welcome to your new sanctuary.</p>
+              <h3 className="font-serif text-3xl font-bold text-brand-burgundy mb-2">Welcome to Twinkly Nails</h3>
+              <p className="text-brand-burgundy/70 text-sm mb-8">Discover your new sanctuary and browse our latest offerings.</p>
               <Link to="/promotions">
                 <button className="bg-gradient-to-r from-brand-burgundy to-rose-900 text-white px-10 py-4 rounded-full font-sans text-sm font-bold tracking-widest uppercase hover:opacity-90 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   View Promotions
@@ -215,28 +201,32 @@ const Home = () => {
               >
                 {promotions.map((promo) => (
                   <div key={promo.id} className="w-full flex-shrink-0 px-4">
-                    <h3 className="font-serif text-3xl font-bold text-brand-burgundy mb-2">
+                    <h3 className="font-serif text-3xl font-bold text-brand-burgundy mb-3">
                       {promo.title}
                     </h3>
-                    <p className="text-brand-burgundy/90 font-bold mb-2">
-                      {promo.discount}
+                    
+                    <p className="text-brand-burgundy/90 font-bold text-xl mb-3">
+                      Rs {Number(promo.offerPrice).toLocaleString()}
                     </p>
-                    <p className="font-mono text-sm bg-white/50 text-brand-burgundy inline-block px-3 py-1 rounded-md mb-6 border border-brand-pink">
-                      Code: {promo.code}
-                    </p>
-                    <br/>
+
+                    {promo.details && (
+                      <p className="font-sans text-sm text-brand-burgundy/70 mb-6 line-clamp-2 max-w-md mx-auto">
+                        {promo.details}
+                      </p>
+                    )}
+                    
                     <button 
                       onClick={() => handleClaimOffer(promo)}
                       className="bg-gradient-to-r from-brand-burgundy to-rose-900 text-white px-10 py-4 rounded-full font-sans text-sm font-bold tracking-widest uppercase hover:opacity-90 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 inline-block cursor-pointer"
                     >
-                      Claim Offer
+                      Book Offer
                     </button>
                   </div>
                 ))}
               </div>
 
               {promotions.length > 1 && (
-                <div className="flex justify-center mt-6 space-x-2">
+                <div className="flex justify-center mt-8 space-x-2">
                   {promotions.map((_, idx) => (
                     <button
                       key={idx}
@@ -253,13 +243,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 4. INSPIRATION (NOW WIRED TO LIVE FIREBASE GALLERY) */}
       <section className="py-16 md:py-24 bg-white text-center">
         <p className="font-sans text-xs tracking-widest text-brand-burgundy uppercase mb-8 md:mb-10 border-b border-brand-burgundy inline-block pb-1">Inspiration</p>
         
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 px-4 md:px-10">
           
-          {/* Map through the 3 display images (live or fallback) */}
           {displayImages.map((imgSrc, index) => (
             <div key={index} className="overflow-hidden rounded-2xl md:rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 group">
               <img 
@@ -273,7 +261,6 @@ const Home = () => {
             </div>
           ))}
           
-          {/* View Full Gallery Link Box */}
           <Link to="/gallery" className="bg-gradient-to-br from-brand-pink/50 to-rose-100 rounded-2xl md:rounded-3xl flex flex-col items-center justify-center h-40 md:h-72 text-brand-burgundy hover:shadow-xl transition-all duration-300 cursor-pointer border border-white group relative overflow-hidden">
             <div className="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors duration-500"></div>
             
