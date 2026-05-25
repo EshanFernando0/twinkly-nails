@@ -8,10 +8,13 @@ const AdminServices = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null); 
   
+  // UPDATED: Added details and imageUrl to initial state. Changed default category to 'Services'.
   const [formData, setFormData] = useState({
     name: '',
-    category: 'Enhancements',
+    category: 'Services',
     price: '',
+    details: '',
+    imageUrl: '',
     status: true
   });
 
@@ -24,17 +27,21 @@ const AdminServices = () => {
   }, []);
 
   const handleOpenModal = () => {
-    setFormData({ name: '', category: 'Enhancements', price: '', status: true });
+    // UPDATED: Reset includes new fields
+    setFormData({ name: '', category: 'Services', price: '', details: '', imageUrl: '', status: true });
     setEditingId(null);
     setIsModalOpen(true);
   };
 
   const handleEditService = (service) => {
+    // UPDATED: Load existing fields when editing
     setFormData({
-      name: service.name,
-      category: service.category,
-      price: service.price,
-      status: service.status
+      name: service.name || '',
+      category: service.category || 'Services',
+      price: service.price || '',
+      details: service.details || '',
+      imageUrl: service.imageUrl || '',
+      status: service.status ?? true
     });
     setEditingId(service.id);
     setIsModalOpen(true);
@@ -57,10 +64,13 @@ const AdminServices = () => {
     setIsSubmitting(true);
     
     try {
+      // UPDATED: Save details and imageUrl to Firebase
       const serviceDataToSave = {
         name: formData.name,
         category: formData.category,
         price: Number(formData.price),
+        details: formData.details,
+        imageUrl: formData.imageUrl,
         status: formData.status,
         updatedAt: new Date()
       };
@@ -161,8 +171,13 @@ const AdminServices = () => {
                 services.map((service) => (
                   <tr key={service.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 md:px-8 py-5 font-sans font-bold text-gray-900 flex items-center whitespace-nowrap">
-                      <div className="w-10 h-10 bg-brand-pink/30 text-brand-burgundy rounded-lg mr-4 flex items-center justify-center font-serif text-lg border border-brand-pink/50 shrink-0">
-                         {service.name.charAt(0).toUpperCase()}
+                      <div className="w-10 h-10 bg-brand-pink/30 text-brand-burgundy rounded-lg mr-4 flex items-center justify-center font-serif text-lg border border-brand-pink/50 shrink-0 overflow-hidden">
+                        {/* Show image thumbnail if URL exists, otherwise show letter */}
+                        {service.imageUrl ? (
+                          <img src={service.imageUrl} alt={service.name} className="w-full h-full object-cover" />
+                        ) : (
+                          service.name.charAt(0).toUpperCase()
+                        )}
                       </div>
                       {service.name}
                     </td>
@@ -226,8 +241,8 @@ const AdminServices = () => {
                     onChange={handleInputChange}
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink focus:border-transparent transition-all"
                   >
-                    <option value="Enhancements">Enhancements</option>
-                    <option value="Natural Nails">Natural Nails</option>
+                    {/* UPDATED: Cleaned up categories */}
+                    <option value="Services">Services</option>
                     <option value="Nail Art">Nail Art</option>
                   </select>
                 </div>
@@ -242,6 +257,32 @@ const AdminServices = () => {
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink focus:border-transparent transition-all"
                   />
                 </div>
+              </div>
+
+              {/* NEW: Image URL Input */}
+              <div>
+                <label className="block font-sans text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Image URL (Optional)</label>
+                <input 
+                  type="url" 
+                  name="imageUrl"
+                  placeholder="https://example.com/image.jpg"
+                  value={formData.imageUrl}
+                  onChange={handleInputChange}
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* NEW: Additional Details Textarea */}
+              <div>
+                <label className="block font-sans text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Additional Details</label>
+                <textarea 
+                  name="details"
+                  rows="3"
+                  placeholder="Service description, benefits, or time required..."
+                  value={formData.details}
+                  onChange={handleInputChange}
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink focus:border-transparent transition-all resize-none"
+                ></textarea>
               </div>
 
               <div className="flex items-center mt-2">

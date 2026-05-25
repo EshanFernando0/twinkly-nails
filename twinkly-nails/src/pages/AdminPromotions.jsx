@@ -8,10 +8,11 @@ const AdminPromotions = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null); 
   
+  // UPDATED: Removed 'code' and 'discount', added 'offerPrice' and 'details'
   const [formData, setFormData] = useState({
     title: '',
-    code: '',
-    discount: '',
+    offerPrice: '',
+    details: '',
     expiryDate: '',
     status: true,
     imageUrl: '' 
@@ -26,18 +27,18 @@ const AdminPromotions = () => {
   }, []);
 
   const handleOpenModal = () => {
-    setFormData({ title: '', code: '', discount: '', expiryDate: '', status: true, imageUrl: '' });
+    setFormData({ title: '', offerPrice: '', details: '', expiryDate: '', status: true, imageUrl: '' });
     setEditingId(null);
     setIsModalOpen(true);
   };
 
   const handleEditPromo = (promo) => {
     setFormData({
-      title: promo.title,
-      code: promo.code,
-      discount: promo.discount,
+      title: promo.title || '',
+      offerPrice: promo.offerPrice || '',
+      details: promo.details || '',
       expiryDate: promo.expiryDate || '',
-      status: promo.status,
+      status: promo.status ?? true,
       imageUrl: promo.imageUrl || ''
     });
     setEditingId(promo.id);
@@ -59,10 +60,11 @@ const AdminPromotions = () => {
     setIsSubmitting(true);
     
     try {
+      // UPDATED: Save the new fields to Firebase
       const promoDataToSave = {
         title: formData.title,
-        code: formData.code.toUpperCase(), 
-        discount: formData.discount,
+        offerPrice: Number(formData.offerPrice),
+        details: formData.details,
         expiryDate: formData.expiryDate,
         status: formData.status,
         imageUrl: formData.imageUrl,
@@ -101,7 +103,7 @@ const AdminPromotions = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-2">Promotions</h1>
-        <p className="text-gray-500 text-base md:text-lg">Manage your active offers, discount codes, and seasonal sales.</p>
+        <p className="text-gray-500 text-base md:text-lg">Manage your active offers, packages, and seasonal sales.</p>
       </div>
 
       {/* Table Section */}
@@ -124,8 +126,8 @@ const AdminPromotions = () => {
             <thead>
               <tr className="bg-gray-50/50">
                 <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">Campaign Title</th>
-                <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">Promo Code</th>
-                <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">Offer</th>
+                <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">Offer Price</th>
+                <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">Details</th>
                 <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">Status</th>
                 <th className="px-6 md:px-8 py-4 font-sans text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 text-right">Actions</th>
               </tr>
@@ -150,10 +152,16 @@ const AdminPromotions = () => {
                       </div>
                       {promo.title}
                     </td>
+                    {/* UPDATED: Displays formatted price */}
                     <td className="px-6 md:px-8 py-5">
-                      <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded border border-gray-200 font-mono text-[10px] md:text-sm tracking-widest whitespace-nowrap">{promo.code}</span>
+                      <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded border border-gray-200 font-sans text-sm font-bold tracking-widest whitespace-nowrap">
+                        Rs {Number(promo.offerPrice).toLocaleString()}
+                      </span>
                     </td>
-                    <td className="px-6 md:px-8 py-5 font-sans text-brand-burgundy font-bold whitespace-nowrap">{promo.discount}</td>
+                    {/* NEW: Displays details snippet */}
+                    <td className="px-6 md:px-8 py-5 font-sans text-sm text-gray-500 max-w-[200px] truncate">
+                      {promo.details || "-"}
+                    </td>
                     <td className="px-6 md:px-8 py-5">
                        <div 
                          onClick={() => handleToggleStatus(promo.id, promo.status)}
@@ -207,23 +215,24 @@ const AdminPromotions = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-sans text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Promo Code</label>
-                  <input 
-                    type="text" name="code" required value={formData.code} onChange={handleInputChange}
-                    placeholder="GLOWUP24"
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink uppercase"
-                  />
-                </div>
-                <div>
-                  <label className="block font-sans text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">The Offer</label>
-                  <input 
-                    type="text" name="discount" required value={formData.discount} onChange={handleInputChange}
-                    placeholder="e.g. 15% OFF"
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink"
-                  />
-                </div>
+              {/* UPDATED: Offer Price Input */}
+              <div>
+                <label className="block font-sans text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Offer Price (Rs)</label>
+                <input 
+                  type="number" name="offerPrice" required value={formData.offerPrice} onChange={handleInputChange}
+                  placeholder="e.g. 4500"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink"
+                />
+              </div>
+
+              {/* NEW: Additional Details Textarea */}
+              <div>
+                <label className="block font-sans text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Additional Information</label>
+                <textarea 
+                  name="details" rows="3" value={formData.details} onChange={handleInputChange}
+                  placeholder="Package inclusions, terms, or conditions..."
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink resize-none"
+                ></textarea>
               </div>
 
               <div>

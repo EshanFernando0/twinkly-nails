@@ -27,6 +27,7 @@ const Home = () => {
   const [promotions, setPromotions] = useState([]);
   const [currentPromoSlide, setCurrentPromoSlide] = useState(0);
   const [loadingPromos, setLoadingPromos] = useState(true);
+  
   useEffect(() => {
     const q = query(collection(db, 'promotions'), where("status", "==", true));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -126,7 +127,7 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Manicure Block (Text Left, Image Right) */}
+          {/* Manicure Block */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
             <div className="order-2 lg:order-1 space-y-6">
               <h3 className="font-serif text-3xl font-bold text-brand-burgundy">Revitalizing Manicures</h3>
@@ -154,7 +155,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Pedicure Block (Image Left, Text Right) */}
+          {/* Pedicure Block */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative group">
                <div className="absolute inset-0 bg-rose-200/60 rounded-[3rem] transform -translate-x-4 translate-y-4 group-hover:-translate-x-6 group-hover:translate-y-6 transition-transform duration-500"></div>
@@ -253,18 +254,18 @@ const Home = () => {
       </section>
 
       {/* 4. INSPIRATION (NOW WIRED TO LIVE FIREBASE GALLERY) */}
-      <section className="py-24 bg-white text-center">
-        <p className="font-sans text-xs tracking-widest text-brand-burgundy uppercase mb-10 border-b border-brand-burgundy inline-block pb-1">Inspiration</p>
+      <section className="py-16 md:py-24 bg-white text-center">
+        <p className="font-sans text-xs tracking-widest text-brand-burgundy uppercase mb-8 md:mb-10 border-b border-brand-burgundy inline-block pb-1">Inspiration</p>
         
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-10">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 px-4 md:px-10">
           
           {/* Map through the 3 display images (live or fallback) */}
           {displayImages.map((imgSrc, index) => (
-            <div key={index} className="overflow-hidden rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 group">
+            <div key={index} className="overflow-hidden rounded-2xl md:rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 group">
               <img 
                 src={imgSrc} 
                 alt={`Nail Art Inspiration ${index + 1}`} 
-                className="object-cover h-72 w-full group-hover:scale-110 transition-transform duration-700" 
+                className="object-cover h-40 md:h-72 w-full group-hover:scale-110 transition-transform duration-700" 
                 onError={(e) => {
                   e.target.src = fallbackImages[index]; 
                 }}
@@ -273,14 +274,15 @@ const Home = () => {
           ))}
           
           {/* View Full Gallery Link Box */}
-          <Link to="/gallery" className="bg-gradient-to-br from-brand-pink/50 to-rose-100 rounded-3xl flex flex-col items-center justify-center h-72 text-brand-burgundy hover:shadow-xl transition-all duration-300 cursor-pointer border border-white group relative overflow-hidden">
+          <Link to="/gallery" className="bg-gradient-to-br from-brand-pink/50 to-rose-100 rounded-2xl md:rounded-3xl flex flex-col items-center justify-center h-40 md:h-72 text-brand-burgundy hover:shadow-xl transition-all duration-300 cursor-pointer border border-white group relative overflow-hidden">
             <div className="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors duration-500"></div>
             
-            <svg className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300 z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8 md:w-12 md:h-12 mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300 z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <p className="font-serif italic text-2xl font-bold z-10 group-hover:-translate-y-1 transition-transform duration-300">
-              See More <br/>in Gallery ➔
+            
+            <p className="font-serif italic text-base md:text-2xl font-bold z-10 group-hover:-translate-y-1 transition-transform duration-300 leading-tight px-2">
+              See More <br className="hidden md:block"/>in Gallery ➔
             </p>
           </Link>
 

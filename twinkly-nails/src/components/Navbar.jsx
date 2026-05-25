@@ -33,6 +33,8 @@ const Navbar = () => {
 
         {/* DESKTOP Navigation Links */}
         <div className="hidden lg:flex space-x-10 font-sans text-sm font-medium uppercase tracking-widest">
+          {/* NEW: Home Link */}
+          <Link to="/" className={`hover:opacity-70 transition-opacity ${location.pathname === '/' ? 'border-b-2 border-brand-burgundy pb-1' : ''}`}>Home</Link>
           <Link to="/services" className={`hover:opacity-70 transition-opacity ${location.pathname === '/services' ? 'border-b-2 border-brand-burgundy pb-1' : ''}`}>Services</Link>
           <Link to="/promotions" className={`hover:opacity-70 transition-opacity ${location.pathname === '/promotions' ? 'border-b-2 border-brand-burgundy pb-1' : ''}`}>Promotions</Link>
           <Link to="/gallery" className={`hover:opacity-70 transition-opacity ${location.pathname === '/gallery' ? 'border-b-2 border-brand-burgundy pb-1' : ''}`}>Gallery</Link>
@@ -71,6 +73,8 @@ const Navbar = () => {
         }`}
       >
         <div className="flex flex-col items-center py-8 space-y-6 font-sans text-sm font-bold uppercase tracking-widest border-t border-brand-burgundy/10">
+          {/* NEW: Home Link */}
+          <Link to="/" onClick={closeMenu} className="text-brand-burgundy hover:text-white transition-colors w-full text-center py-2">Home</Link>
           <Link to="/services" onClick={closeMenu} className="text-brand-burgundy hover:text-white transition-colors w-full text-center py-2">Services</Link>
           <Link to="/promotions" onClick={closeMenu} className="text-brand-burgundy hover:text-white transition-colors w-full text-center py-2">Promotions</Link>
           <Link to="/gallery" onClick={closeMenu} className="text-brand-burgundy hover:text-white transition-colors w-full text-center py-2">Gallery</Link>

@@ -70,7 +70,7 @@ ${formData.message}`;
             Get in Touch
           </span>
           <h1 className="font-serif text-5xl md:text-6xl text-brand-burgundy font-bold mb-6 drop-shadow-sm">
-            Book Your Sanctuary
+            Book Your Service
           </h1>
           <p className="font-sans text-brand-burgundy/70 text-lg max-w-xl mx-auto">
             Have a question about our services or ready to schedule your next pampering session? We would love to hear from you.
@@ -79,7 +79,7 @@ ${formData.message}`;
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           
-          {/* Left Column: Contact Info & Map */}
+          {/* Left Column: Contact Info */}
           <div className="lg:col-span-2 flex flex-col space-y-8">
             
             <div className="bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2rem] p-8 shadow-lg shadow-brand-pink/20 hover:shadow-xl transition-shadow duration-300">
@@ -138,23 +138,6 @@ ${formData.message}`;
 
               </div>
             </div> 
-
-            {/* FIXED LIVE GOOGLE MAPS EMBED WITH PIN */}
-            <div className="rounded-[2rem] overflow-hidden h-64 shadow-lg border border-white/60 bg-gray-100 p-1">
-              <div className="w-full h-full rounded-[1.8rem] overflow-hidden">
-                <iframe 
-                  title="Twinkly Nails Location"
-                  src="https://maps.google.com/maps?q=No+64,+Elabodawatta,+Hendala,+Wattala&t=&z=15&ie=UTF8&iwloc=&output=embed" 
-                  width="100%" 
-                  height="100%" 
-                  style={{ border: 0 }} 
-                  allowFullScreen="" 
-                  loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
-            </div>
-            
           </div>
 
           {/* Right Column: Glossy Form */}
