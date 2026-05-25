@@ -90,7 +90,7 @@ const Gallery = () => {
           <div className="absolute top-10 left-10 w-4 h-4 bg-brand-pink rounded-full opacity-50 blur-[2px]"></div>
           <div className="absolute bottom-10 right-10 w-6 h-6 bg-rose-300 rounded-full opacity-50 blur-[2px]"></div>
 
-          <h2 className="font-serif text-2xl md:text-4xl text-brand-burgundy font-bold mb-4">Want to see more of Roshi's magic? ✨</h2>
+          <h2 className="font-serif text-2xl md:text-4xl text-brand-burgundy font-bold mb-4">Want to see more of Twinkly's magic? ✨</h2>
           <p className="font-sans text-brand-burgundy/70 text-sm md:text-lg mb-8 md:mb-10 max-w-2xl mx-auto">
             Follow us on social media for daily nail inspiration, client transformations, and the latest trendy designs straight from the salon!
           </p>
