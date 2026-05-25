@@ -27,8 +27,8 @@ const Services = () => {
         ...doc.data()
       }));
 
-      // Sort services by price in Ascending order (Lowest to Highest)
-      activeServices.sort((a, b) => Number(a.price) - Number(b.price));
+      // UPDATED: Sort services by price in DESCENDING order (Highest to Lowest)
+      activeServices.sort((a, b) => Number(b.price) - Number(a.price));
 
       setServices(activeServices);
       setLoading(false);
@@ -37,9 +37,9 @@ const Services = () => {
     return () => unsubscribe();
   }, []);
 
-  // UPDATED: WhatsApp Redirect Handler with professional greeting
+  // NEW: WhatsApp Redirect Handler for Services
   const handleBookNow = (service) => {
-    const message = `Hello Roshi! ✨ I'm interested in the ${service.name} service. Could you please provide me with more information about it?`;
+    const message = `Hi Roshi! ✨ I'm looking at your website and I would love to book an appointment for a "${service.name}". Please let me know your availability!`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
@@ -68,7 +68,6 @@ const Services = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8">
                 {services.filter(s => s.category === category).map((s, index) => {
                   
-                  // Use the custom image from Admin if provided, otherwise fallback
                   const displayImage = s.imageUrl || premiumFallbackImages[index % premiumFallbackImages.length];
 
                   return (
@@ -87,13 +86,6 @@ const Services = () => {
                         <div>
                           <h3 className="font-serif font-bold text-brand-burgundy text-sm md:text-xl leading-tight text-center md:text-left">{s.name}</h3>
                           
-                          {/* Show additional details if added in the admin panel */}
-                          {s.details && (
-                            <p className="hidden md:block font-sans text-xs text-brand-burgundy/70 mt-2 line-clamp-2">
-                              {s.details}
-                            </p>
-                          )}
-                          
                           <div className="text-center md:text-left mt-2 md:mt-4">
                             <p className="font-sans text-brand-burgundy font-bold bg-brand-pink/20 inline-block px-2 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-sm tracking-wider">
                               Rs {Number(s.price).toLocaleString()}
@@ -101,15 +93,12 @@ const Services = () => {
                           </div>
                         </div>
                         
-                        {/* UPDATED: Only show the Book Now button if the category is NOT 'Nail Art' */}
-                        {s.category !== 'Nail Art' && (
-                          <button 
-                            onClick={() => handleBookNow(s)}
-                            className="mt-3 md:mt-8 w-full border border-brand-burgundy text-brand-burgundy py-2 md:py-3 rounded-full text-[9px] md:text-xs font-bold uppercase tracking-widest hover:bg-brand-burgundy hover:text-white transition-colors duration-300"
-                          >
-                            Book Now
-                          </button>
-                        )}
+                        <button 
+                          onClick={() => handleBookNow(s)}
+                          className="mt-3 md:mt-8 w-full border border-brand-burgundy text-brand-burgundy py-2 md:py-3 rounded-full text-[9px] md:text-xs font-bold uppercase tracking-widest hover:bg-brand-burgundy hover:text-white transition-colors duration-300"
+                        >
+                          Book Now
+                        </button>
                       </div>
 
                     </div>
