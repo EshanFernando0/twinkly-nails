@@ -39,7 +39,7 @@ const Services = () => {
 
   // NEW: WhatsApp Redirect Handler for Services
   const handleBookNow = (service) => {
-    const message = `Hi Roshi! ✨ I'm looking at your website and I would love to book an appointment for a "${service.name}". Please let me know your availability!`;
+    const message = `Hi Roshi! ✨ I’m interested in "${service.name}". Can you please send me more details about it? Thank you!`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
