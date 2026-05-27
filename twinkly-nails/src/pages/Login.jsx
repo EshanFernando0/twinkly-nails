@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebase'; // Adjust this path if your firebase.js is somewhere else!
 import logo from '../assets/Logo01.png';
@@ -11,10 +11,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-  if (auth.currentUser) {
-    return <Navigate to="/admin" replace />;
-  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
