@@ -139,7 +139,7 @@ const Home = () => {
             </div>
             <div className="order-1 lg:order-2 relative group">
               <div className="absolute inset-0 bg-brand-pink/40 rounded-[3rem] transform translate-x-4 translate-y-4 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500"></div>
-              <img src="https://smartbeauty.co.nz/wp-content/uploads/2019/05/1_1.jpg" alt="Revitalizing Manicure" className="relative rounded-[3rem] shadow-xl object-cover h-[450px] w-full z-10" />
+              <img src="https://hotnailsphilly.files.wordpress.com/2013/06/hands.jpg" alt="Revitalizing Manicure" className="relative rounded-[3rem] shadow-xl object-cover h-[450px] w-full z-10" />
             </div>
           </div>
 
