@@ -35,7 +35,7 @@ const Footer = () => {
             </li>
             <li className="pt-2">
               <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                <span className="text-brand-pink">WhatsApp:</span> +94 70 455 3916
+                <span className="text-brand-pink">WhatsApp:</span> 0703122757
               </a>
             </li>
           </ul>

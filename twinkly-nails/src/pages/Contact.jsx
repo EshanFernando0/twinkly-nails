@@ -131,7 +131,7 @@ ${formData.message}`;
                       rel="noopener noreferrer"
                       className="text-brand-burgundy text-sm font-bold leading-relaxed hover:opacity-80 transition-opacity underline decoration-green-400 underline-offset-4"
                     >
-                      +94 70 455 3916
+                      0703122757
                     </a>
                   </div>
                 </div>
